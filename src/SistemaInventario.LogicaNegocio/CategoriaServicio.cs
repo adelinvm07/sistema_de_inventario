@@ -30,7 +30,7 @@ namespace SistemaInventario.LogicaNegocio
         /// <summary>
         /// Valida y guarda la categoría antes de guardar sus fotos nuevas.
         /// </summary>
-        public Dictionary<string, string> Guardar(Categoria categoria, List<string>? rutasFotos = null)
+        public Dictionary<string, string> Guardar(Categoria categoria, List<string>? rutasFotos = null, List<int>? idsFotosQuitar = null)
         {
             Dictionary<string, string> errores = Validador.ValidarCategoria(categoria);
             if (errores.Count > 0)
@@ -46,8 +46,29 @@ namespace SistemaInventario.LogicaNegocio
             }
 
             int cantidad = 0;
+            List<ImagenCategoria> fotosActuales = new List<ImagenCategoria>();
             if (categoria.Id > 0)
-                cantidad = _imagenes.ObtenerPorCategoria(categoria.Id).Count;
+                fotosActuales = _imagenes.ObtenerPorCategoria(categoria.Id);
+            cantidad = fotosActuales.Count;
+            if (idsFotosQuitar != null)
+            {
+                foreach (int idFoto in idsFotosQuitar)
+                {
+                    bool encontrada = false;
+                    foreach (ImagenCategoria foto in fotosActuales)
+                    {
+                        if (foto.Id == idFoto)
+                            encontrada = true;
+                    }
+                    if (!encontrada)
+                        errores["Fotos"] = "Una foto seleccionada ya no pertenece a esta categoría o fue eliminada. Abra nuevamente el formulario.";
+                }
+                foreach (ImagenCategoria foto in fotosActuales)
+                {
+                    if (idsFotosQuitar.Contains(foto.Id))
+                        cantidad--;
+                }
+            }
             if (rutasFotos != null)
             {
                 if (cantidad + rutasFotos.Count > 5)
@@ -55,7 +76,7 @@ namespace SistemaInventario.LogicaNegocio
                 foreach (string ruta in rutasFotos)
                 {
                     if (!Validador.ValidarImagen(ruta))
-                        errores["Fotos"] = "Seleccione un archivo existente JPG, JPEG o PNG de máximo 2 MB.";
+                        errores["Fotos"] = Validador.ObtenerErrorImagen(ruta);
                 }
             }
             if (errores.Count > 0)
@@ -78,6 +99,14 @@ namespace SistemaInventario.LogicaNegocio
             else
                 _repo.Actualizar(categoria);
 
+            if (idsFotosQuitar != null)
+            {
+                foreach (ImagenCategoria foto in fotosActuales)
+                {
+                    if (idsFotosQuitar.Contains(foto.Id))
+                        QuitarFoto(categoria.Id, foto.Id);
+                }
+            }
             foreach (ImagenCategoria foto in fotos)
             {
                 foto.IdCategoria = categoria.Id;
@@ -135,12 +164,34 @@ namespace SistemaInventario.LogicaNegocio
         }
 
         /// <summary>
+        /// Revisa el archivo y el límite de fotos antes de mostrar una foto nueva.
+        /// </summary>
+        public string ValidarFoto(int idCategoria, string ruta, int cantidadNuevas, List<int>? idsFotosQuitar = null)
+        {
+            if (!Validador.ValidarImagen(ruta))
+                return Validador.ObtenerErrorImagen(ruta);
+            int cantidad = cantidadNuevas;
+            if (idCategoria > 0)
+            {
+                foreach (ImagenCategoria foto in _imagenes.ObtenerPorCategoria(idCategoria))
+                {
+                    if (idsFotosQuitar == null || !idsFotosQuitar.Contains(foto.Id))
+                        cantidad++;
+                }
+            }
+            if (cantidad >= 5)
+                return "La categoría puede tener un máximo de 5 fotos activas.";
+            return "";
+        }
+
+        /// <summary>
         /// Agrega una foto válida a una categoría activa; vacío indica éxito.
         /// </summary>
         public string AgregarFoto(int idCategoria, string ruta)
         {
-            if (!Validador.ValidarImagen(ruta))
-                return "Seleccione un archivo existente JPG, JPEG o PNG de máximo 2 MB.";
+            string error = ValidarFoto(idCategoria, ruta, 0);
+            if (error != "")
+                return error;
             Categoria categoria = _repo.ObtenerPorId(idCategoria);
             if (categoria == null || !categoria.Activo)
                 return "Guarde una categoría activa antes de agregar fotos.";

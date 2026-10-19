@@ -48,19 +48,27 @@ public static class Validador
     /// </summary>
     public static bool ValidarImagen(string ruta)
     {
+        return ObtenerErrorImagen(ruta) == "";
+    }
+
+    /// <summary>
+    /// Devuelve el motivo por el que no se acepta un archivo de imagen.
+    /// </summary>
+    public static string ObtenerErrorImagen(string ruta)
+    {
         if (String.IsNullOrWhiteSpace(ruta))
-            return false;
-
+            return "Seleccione una imagen.";
         FileInfo info = new FileInfo(ruta);
-
         if (!info.Exists)
-            return false;
-
+            return "El archivo seleccionado ya no existe.";
         string extension = info.Extension.ToLower();
-
-        if ((extension == ".png" || extension == ".jpg" || extension == ".jpeg") && info.Length <= 2 * 1024 * 1024)
-            return true;
-        return false;
+        if (extension != ".png" && extension != ".jpg" && extension != ".jpeg")
+            return "Solo se permiten imágenes JPG, JPEG y PNG.";
+        if (info.Length == 0)
+            return "El archivo de imagen está vacío.";
+        if (info.Length > 2 * 1024 * 1024)
+            return "La imagen supera el tamaño máximo de 2 MB.";
+        return "";
     }
 
     //Validaciones por entidad
