@@ -73,7 +73,7 @@ public partial class FormularioPrincipal : Form
                     using (PapeleraForm formulario = new PapeleraForm(_categorias, _suplidores, _productos))
                     {
                         formulario.ShowDialog(this);
-                        pantalla = "";
+                        pantalla = formulario.PantallaSeleccionada;
                     }
                 }
                 else
