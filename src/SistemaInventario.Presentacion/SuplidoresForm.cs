@@ -25,6 +25,7 @@ namespace SistemaInventario.Presentacion
             btnCategoria.Click += IrCategorias_Click;
             btnSuplidores.Click += IrSuplidores_Click;
             btnProductos.Click += IrProductos_Click;
+            guna2Button1.Click += IrPapelera_Click;
             btnVolver.Click += Volver_Click;
             tituloLabel.Click += Volver_Click;
         }
@@ -107,6 +108,12 @@ namespace SistemaInventario.Presentacion
         private void IrProductos_Click(object? sender, EventArgs e)
         {
             PantallaSeleccionada = "Productos";
+            Close();
+        }
+
+        private void IrPapelera_Click(object? sender, EventArgs e)
+        {
+            PantallaSeleccionada = "Papelera";
             Close();
         }
 

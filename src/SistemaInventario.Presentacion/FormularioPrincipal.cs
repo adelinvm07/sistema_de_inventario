@@ -18,6 +18,7 @@ public partial class FormularioPrincipal : Form
         _categorias = categorias;
         _suplidores = suplidores;
         _productos = productos;
+        guna2Button1.Click += btnPapelera_Click;
         string nombreUsuario = Environment.UserName;
         bienvenidaLabel.Text = $"¡Bienvenid@, {char.ToUpper(nombreUsuario[0]) + nombreUsuario.Substring(1)}!";
     }
@@ -67,6 +68,14 @@ public partial class FormularioPrincipal : Form
                         pantalla = formulario.PantallaSeleccionada;
                     }
                 }
+                else if (pantalla == "Papelera")
+                {
+                    using (PapeleraForm formulario = new PapeleraForm(_categorias, _suplidores, _productos))
+                    {
+                        formulario.ShowDialog(this);
+                        pantalla = "";
+                    }
+                }
                 else
                     pantalla = "";
             }
@@ -97,6 +106,11 @@ public partial class FormularioPrincipal : Form
     private void btnProductos_Click(object? sender, EventArgs e)
     {
         AbrirPantalla("Productos");
+    }
+
+    private void btnPapelera_Click(object? sender, EventArgs e)
+    {
+        AbrirPantalla("Papelera");
     }
 
     private void guna2PictureBox7_Click(object? sender, EventArgs e)
