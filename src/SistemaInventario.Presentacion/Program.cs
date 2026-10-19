@@ -1,3 +1,5 @@
+using SistemaInventario.LogicaNegocio;
+
 namespace SistemaInventario.Presentacion;
 
 internal static class Program
@@ -6,6 +8,7 @@ internal static class Program
     private static void Main()
     {
         ApplicationConfiguration.Initialize();
-        Application.Run(new FormularioPrincipal());
+        FabricaServicios fabrica = new FabricaServicios();
+        Application.Run(new FormularioPrincipal(fabrica.CrearCategoriaServicio(), fabrica.CrearSuplidorServicio(), fabrica.CrearProductoServicio()));
     }
 }
