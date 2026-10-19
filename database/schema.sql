@@ -1,11 +1,3 @@
-USE master;
-GO
-IF DB_ID('SistemaInventario') IS NOT NULL
-BEGIN
-    ALTER DATABASE SistemaInventario SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
-    DROP DATABASE SistemaInventario;
-END;
-GO
 CREATE DATABASE SistemaInventario;
 GO
 USE SistemaInventario;
