@@ -18,13 +18,27 @@ partial class FormularioPrincipal
 
     private void InitializeComponent()
     {
+        components = new System.ComponentModel.Container();
+        errorProvider1 = new ErrorProvider(components);
+        ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
         SuspendLayout();
-        AutoScaleDimensions = new SizeF(7F, 15F);
+        // 
+        // errorProvider1
+        // 
+        errorProvider1.ContainerControl = this;
+        // 
+        // FormularioPrincipal
+        // 
+        AutoScaleDimensions = new SizeF(8F, 20F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(1000, 600);
+        ClientSize = new Size(1143, 800);
+        Margin = new Padding(3, 4, 3, 4);
         Name = "FormularioPrincipal";
         StartPosition = FormStartPosition.CenterScreen;
         Text = "Sistema de Inventario";
+        ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
         ResumeLayout(false);
     }
+
+    private ErrorProvider errorProvider1;
 }
