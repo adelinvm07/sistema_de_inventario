@@ -51,7 +51,6 @@ namespace SistemaInventario.AccesoDatos
                 throw;
             }
         }
-
         public override void Actualizar(ImagenCategoria imagen)
         {
             string actualizar = "UPDATE Imagenes SET datos = @datos, fecha_modificacion = GETDATE() WHERE id = @id";

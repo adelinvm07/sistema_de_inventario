@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SistemaInventario.AccesoDatos
 {
-    internal interface IRepositorio<T>
+    public interface IRepositorio<T>
     {
         List<T> ObtenerTodos();
         T ObtenerPorId(int id);
