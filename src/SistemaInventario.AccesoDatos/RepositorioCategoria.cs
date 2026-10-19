@@ -4,7 +4,7 @@ using SistemaInventario.Entidades.Utilidades;
 
 namespace SistemaInventario.AccesoDatos
 {
-    public class RepositorioCategoria : RepositorioBase<Categoria>
+    public class RepositorioCategoria : RepositorioBase<Categoria>, IRepositorioCategoria
     {
         protected override string NombreTabla { get { return "Categorias"; } }
         protected override Categoria DeFilaAEntidad(SqlDataReader lector)
@@ -17,14 +17,19 @@ namespace SistemaInventario.AccesoDatos
             c.FechaModificacion = (DateTime)lector["fecha_modificacion"];
             c.Activo = (bool)lector["activo"];
 
-            if (lector["imagen_id"] != DBNull.Value)
-                c.IdImagen = (int)lector["imagen_id"];
-
             return c;
         }
         public override void Insertar(Categoria categoria)
         {
-            string insertar = "INSERT INTO Categorias (nombre, descripcion, imagen_id) VALUES (@nombre, @descripcion, @imagen_id)";
+            InsertarYObtenerId(categoria);
+        }
+
+        /// <summary>
+        /// Inserta la categoría y devuelve el id asignado.
+        /// </summary>
+        public int InsertarYObtenerId(Categoria categoria)
+        {
+            string insertar = "INSERT INTO Categorias (nombre, descripcion) OUTPUT INSERTED.id VALUES (@nombre, @descripcion)";
             try
             {
                 using (SqlConnection conexion = ConexionBD.ObtenerConexion().CrearConexion())
@@ -34,8 +39,7 @@ namespace SistemaInventario.AccesoDatos
                     {
                         comando.Parameters.AddWithValue("@nombre", categoria.Nombre);
                         comando.Parameters.AddWithValue("@descripcion", categoria.Descripcion);
-                        comando.Parameters.AddWithValue("@imagen_id", (object)categoria.IdImagen ?? DBNull.Value);
-                        comando.ExecuteNonQuery();
+                        return (int)comando.ExecuteScalar();
                     }
                 }
             }
@@ -48,7 +52,7 @@ namespace SistemaInventario.AccesoDatos
         public override void Actualizar(Categoria categoria)
         {
             string actualizar = "UPDATE Categorias SET nombre = @nombre, descripcion = @descripcion, " +
-                "imagen_id = @imagen_id, fecha_modificacion = GETDATE() WHERE id = @id";
+                "fecha_modificacion = GETDATE() WHERE id = @id";
             try
             {
                 using (SqlConnection conexion = ConexionBD.ObtenerConexion().CrearConexion())
@@ -58,7 +62,6 @@ namespace SistemaInventario.AccesoDatos
                     {
                         comando.Parameters.AddWithValue("@nombre", categoria.Nombre);
                         comando.Parameters.AddWithValue("@descripcion", categoria.Descripcion);
-                        comando.Parameters.AddWithValue("@imagen_id", (object)categoria.IdImagen ?? DBNull.Value);
                         comando.Parameters.AddWithValue("@id", categoria.Id);
                         comando.ExecuteNonQuery();
                     }

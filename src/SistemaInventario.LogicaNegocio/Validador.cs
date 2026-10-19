@@ -48,6 +48,9 @@ public static class Validador
     /// </summary>
     public static bool ValidarImagen(string ruta)
     {
+        if (String.IsNullOrWhiteSpace(ruta))
+            return false;
+
         FileInfo info = new FileInfo(ruta);
 
         if (!info.Exists)
@@ -63,12 +66,8 @@ public static class Validador
     //Validaciones por entidad
 
     /// <summary>
-    /// Validates a Categoria and returns a dictionary of validation errors keyed by property name.
+    /// Revisa el nombre y la descripción de la categoría.
     /// </summary>
-    /// <remarks>Validation rules: Nombre is required and must be between 3 and 100 characters; Descripcion is
-    /// required and has a maximum length of 500 characters.</remarks>
-    /// <param name="c">Categoria to validate.</param>
-    /// <returns>Dictionary mapping property names to error messages; empty if there are no validation errors.</returns>
     public static Dictionary<string, string> ValidarCategoria(Categoria c)
     {
         Dictionary<string, string> errores = new Dictionary<string, string>();
@@ -89,13 +88,8 @@ public static class Validador
     }
 
     /// <summary>
-    /// Validates a Suplidores instance and returns a dictionary mapping property names to validation messages.
+    /// Revisa los datos de contacto del suplidor.
     /// </summary>
-/// <remarks>Checks performed: NombreEmpresa and NombreContacto are required and limited to 100 characters;
-/// Telefono is required and must match pattern '809-555-1234'; CorreoElectronico is required, limited to 100 characters
-/// and must be a valid email; SitioWeb, if provided, must be a valid URL and not exceed 200 characters.</remarks>
-    /// <param name="s">Suplidores instance to validate.</param>
-    /// <returns>Dictionary mapping property names to validation messages; empty if there are no validation errors.</returns>
     public static Dictionary<string, string> ValidarSuplidor(Suplidores s)
     {
         Dictionary<string, string> errores = new Dictionary<string, string>();
@@ -130,14 +124,8 @@ public static class Validador
         return errores;
     }
     /// <summary>
-    /// Validates the specified product and returns a dictionary of validation errors keyed by property name.
+    /// Revisa el nombre, precio, categoría y suplidor del producto.
     /// </summary>
-    /// <remarks>Validation rules: Nombre is required and has a maximum length of 100 characters;
-    /// PrecioUnitario must be greater than 0 and have at most two decimal places; IdCategoria must be greater than 0.
-    /// Keys used: "Nombre", "PrecioUnitario", "IdCategoria".</remarks>
-    /// <param name="p">Product to validate.</param>
-    /// <returns>Dictionary mapping property names to error messages; empty if the product is valid.</returns>
-
     public static Dictionary<string, string> ValidarProducto(Productos p)
     {
         Dictionary<string, string> errores = new Dictionary<string, string>();
@@ -152,6 +140,9 @@ public static class Validador
 
         if (p.IdCategoria <= 0)
             errores.Add("IdCategoria", "Seleccione una categoría.");
+
+        if (p.IdSuplidor <= 0)
+            errores.Add("IdSuplidor", "Seleccione un suplidor.");
 
         return errores;
     }

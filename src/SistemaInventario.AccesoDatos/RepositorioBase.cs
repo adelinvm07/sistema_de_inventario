@@ -37,6 +37,37 @@ namespace SistemaInventario.AccesoDatos
 
             return lista;
         }
+        /// <summary>
+        /// Devuelve los registros eliminados de forma lógica.
+        /// </summary>
+        public List<T> ObtenerEliminados()
+        {
+            var lista = new List<T>();
+            string querySelect = $"SELECT * FROM {NombreTabla} WHERE activo = 0";
+
+            try
+            {
+                using (SqlConnection conexion = ConexionBD.ObtenerConexion().CrearConexion())
+                {
+                    conexion.Open();
+                    using (SqlCommand comando = new SqlCommand(querySelect, conexion))
+                    using (SqlDataReader lector = comando.ExecuteReader())
+                    {
+                        while (lector.Read())
+                        {
+                            lista.Add(DeFilaAEntidad(lector));
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Logger.RegistrarLog(ex);
+                throw;
+            }
+
+            return lista;
+        }
         public T ObtenerPorId(int id)
         {
             string sql = $"SELECT * FROM {NombreTabla} WHERE id = @id";

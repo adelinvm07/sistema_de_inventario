@@ -8,6 +8,5 @@ namespace SistemaInventario.Entidades
     {
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
-        public int IdImagen { get; set; }
     }
 }

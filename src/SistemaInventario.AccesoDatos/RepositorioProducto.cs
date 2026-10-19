@@ -13,6 +13,7 @@ namespace SistemaInventario.AccesoDatos
             var p = new Productos();
             p.Id = (int)lector["id"];
             p.IdCategoria = (int)lector["categoria_id"];
+            p.IdSuplidor = (int)lector["suplidor_id"];
             p.Nombre = lector["nombre"].ToString();
             p.PrecioUnitario = (decimal)lector["precio_unitario"];
             p.FechaCreacion = (DateTime)lector["fecha_creacion"];
@@ -23,8 +24,8 @@ namespace SistemaInventario.AccesoDatos
         }
         public override void Insertar(Productos producto)
         {
-            string insertar = "INSERT INTO Productos (categoria_id, nombre, precio_unitario) " +
-                "VALUES (@categoria_id, @nombre, @precio_unitario)";
+            string insertar = "INSERT INTO Productos (categoria_id, suplidor_id, nombre, precio_unitario) " +
+                "VALUES (@categoria_id, @suplidor_id, @nombre, @precio_unitario)";
             try
             {
                 using (SqlConnection conexion = ConexionBD.ObtenerConexion().CrearConexion())
@@ -33,6 +34,7 @@ namespace SistemaInventario.AccesoDatos
                     using (SqlCommand comando = new SqlCommand(insertar, conexion))
                     {
                         comando.Parameters.AddWithValue("@categoria_id", producto.IdCategoria);
+                        comando.Parameters.AddWithValue("@suplidor_id", producto.IdSuplidor);
                         comando.Parameters.AddWithValue("@nombre", producto.Nombre);
                         comando.Parameters.AddWithValue("@precio_unitario", producto.PrecioUnitario);
                         comando.ExecuteNonQuery();
@@ -47,7 +49,7 @@ namespace SistemaInventario.AccesoDatos
         }
         public override void Actualizar(Productos producto)
         {
-            string actualizar = "UPDATE Productos SET categoria_id = @categoria_id, nombre = @nombre, " +
+            string actualizar = "UPDATE Productos SET categoria_id = @categoria_id, suplidor_id = @suplidor_id, nombre = @nombre, " +
                 "precio_unitario = @precio_unitario, fecha_modificacion = GETDATE() WHERE id = @id";
             try
             {
@@ -57,6 +59,7 @@ namespace SistemaInventario.AccesoDatos
                     using (SqlCommand comando = new SqlCommand(actualizar, conexion))
                     {
                         comando.Parameters.AddWithValue("@categoria_id", producto.IdCategoria);
+                        comando.Parameters.AddWithValue("@suplidor_id", producto.IdSuplidor);
                         comando.Parameters.AddWithValue("@nombre", producto.Nombre);
                         comando.Parameters.AddWithValue("@precio_unitario", producto.PrecioUnitario);
                         comando.Parameters.AddWithValue("@id", producto.Id);

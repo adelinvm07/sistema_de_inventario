@@ -6,6 +6,7 @@ namespace SistemaInventario.Entidades
 {
     public class ImagenCategoria : ClaseBase
     {
+        public int IdCategoria { get; set; }
         public byte[] Datos { get; set; } 
     }
 }
