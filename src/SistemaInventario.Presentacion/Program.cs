@@ -9,6 +9,6 @@ internal static class Program
     {
         ApplicationConfiguration.Initialize();
         FabricaServicios fabrica = new FabricaServicios();
-        Application.Run(new FormularioPrincipal(fabrica.CrearCategoriaServicio(), fabrica.CrearSuplidorServicio(), fabrica.CrearProductoServicio()));
+        Application.Run(new FormularioPrincipal(fabrica));
     }
 }

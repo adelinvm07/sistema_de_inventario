@@ -4,6 +4,20 @@ namespace SistemaInventario.LogicaNegocio
 {
     public class FabricaServicios
     {
+        public CategoriaServicio Categorias { get; }
+        public SuplidorServicio Suplidores { get; }
+        public ProductoServicio Productos { get; }
+
+        /// <summary>
+        /// Crea los servicios que se compartirán entre las pantallas.
+        /// </summary>
+        public FabricaServicios()
+        {
+            Categorias = CrearCategoriaServicio();
+            Suplidores = CrearSuplidorServicio();
+            Productos = CrearProductoServicio();
+        }
+
         /// <summary>
         /// Crea el servicio de categorías con sus repositorios.
         /// </summary>

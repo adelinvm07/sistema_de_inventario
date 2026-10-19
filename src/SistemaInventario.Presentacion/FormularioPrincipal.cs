@@ -10,14 +10,14 @@ public partial class FormularioPrincipal : Form
     private readonly ProductoServicio _productos;
 
     /// <summary>
-    /// Recibe los servicios creados al iniciar la aplicación.
+    /// Recibe la fábrica y utiliza sus servicios en las pantallas.
     /// </summary>
-    public FormularioPrincipal(CategoriaServicio categorias, SuplidorServicio suplidores, ProductoServicio productos)
+    public FormularioPrincipal(FabricaServicios fabrica)
     {
         InitializeComponent();
-        _categorias = categorias;
-        _suplidores = suplidores;
-        _productos = productos;
+        _categorias = fabrica.Categorias;
+        _suplidores = fabrica.Suplidores;
+        _productos = fabrica.Productos;
         guna2Button1.Click += btnPapelera_Click;
         string nombreUsuario = Environment.UserName;
         bienvenidaLabel.Text = $"¡Bienvenid@, {char.ToUpper(nombreUsuario[0]) + nombreUsuario.Substring(1)}!";
