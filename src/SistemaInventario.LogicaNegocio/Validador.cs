@@ -74,7 +74,7 @@ public static class Validador
 
         if (String.IsNullOrWhiteSpace(c.Nombre))
             errores.Add("Nombre", "Coloque el nombre.");
-        else if (c.Nombre.Length < 3)
+        else if (c.Nombre.Trim().Length < 3)
             errores.Add("Nombre", "Nombre muy corto.");
         else if (c.Nombre.Length > 100)
             errores.Add("Nombre", "Nombre muy largo.");
