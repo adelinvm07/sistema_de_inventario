@@ -81,6 +81,7 @@ partial class FormularioPrincipal
         ((System.ComponentModel.ISupportInitialize)guna2CirclePictureBox1).BeginInit();
         ((System.ComponentModel.ISupportInitialize)guna2CirclePictureBox2).BeginInit();
         ((System.ComponentModel.ISupportInitialize)guna2CirclePictureBox3).BeginInit();
+        pnlPantalla = new Panel();
         SuspendLayout();
         // 
         // guna2Panel1
@@ -445,7 +446,11 @@ partial class FormularioPrincipal
         AutoScaleDimensions = new SizeF(8F, 20F);
         AutoScaleMode = AutoScaleMode.Font;
         BackColor = Color.FromArgb(244, 246, 249);
-        ClientSize = new Size(894, 554);
+        ClientSize = new Size(972, 554);
+        pnlPantalla.Name = "pnlPantalla";
+        pnlPantalla.Dock = DockStyle.Fill;
+        pnlPantalla.BackColor = Color.FromArgb(244, 246, 249);
+        pnlPantalla.Visible = false;
         Controls.Add(guna2PictureBox10);
         Controls.Add(guna2CirclePictureBox3);
         Controls.Add(label3);
@@ -463,6 +468,7 @@ partial class FormularioPrincipal
         Controls.Add(guna2PictureBox6);
         Controls.Add(guna2CirclePictureBox2);
         Controls.Add(guna2PictureBox9);
+        Controls.Add(pnlPantalla);
         FormBorderStyle = FormBorderStyle.FixedDialog;
         Margin = new Padding(3, 4, 3, 4);
         MaximizeBox = false;
@@ -483,6 +489,7 @@ partial class FormularioPrincipal
         ((System.ComponentModel.ISupportInitialize)guna2CirclePictureBox3).EndInit();
         ResumeLayout(false);
     }
+    private Panel pnlPantalla = null!;
     private Guna.UI2.WinForms.Guna2Panel guna2Panel1 = null!;
     private Label tituloLabel = null!;
     private Guna.UI2.WinForms.Guna2PictureBox guna2PictureBox1 = null!;

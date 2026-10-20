@@ -1,19 +1,13 @@
-using Guna.UI2.WinForms;
-using SistemaInventario.Entidades;
+﻿using SistemaInventario.Entidades;
 using SistemaInventario.Entidades.Utilidades;
 using SistemaInventario.LogicaNegocio;
 
 namespace SistemaInventario.Presentacion
 {
-    public class EditarCategoriaForm : Form
+    public partial class MostrarCategoriaForm : Form
     {
         private readonly CategoriaServicio _servicio;
         private readonly Categoria _entidad;
-        private readonly ErrorProvider errores = new ErrorProvider();
-        private readonly Guna2TextBox txtNombre = new Guna2TextBox();
-        private readonly Guna2TextBox txtDescripcion = new Guna2TextBox();
-        private readonly FlowLayoutPanel pnlFotos = new FlowLayoutPanel();
-        private readonly Label lblContador = new Label();
         private readonly List<ImagenCategoria> fotosGuardadas = new List<ImagenCategoria>();
         private readonly List<string> rutasFotos = new List<string>();
         private readonly List<int> idsFotosQuitar = new List<int>();
@@ -22,7 +16,7 @@ namespace SistemaInventario.Presentacion
         /// <summary>
         /// Recibe el servicio y, al editar, los datos que se mostrarán.
         /// </summary>
-        public EditarCategoriaForm(CategoriaServicio servicio, Categoria? entidad = null)
+        public MostrarCategoriaForm(CategoriaServicio servicio, Categoria? entidad = null)
         {
             _servicio = servicio;
             _entidad = new Categoria();
@@ -35,55 +29,7 @@ namespace SistemaInventario.Presentacion
             InitializeComponent();
             txtNombre.Text = _entidad.Nombre;
             txtDescripcion.Text = _entidad.Descripcion;
-            Load += Formulario_Load;
-        }
-
-        private void InitializeComponent()
-        {
-            Text = "Categoría";
-            ClientSize = new Size(520, 460);
-            BackColor = Color.FromArgb(244, 246, 249);
-            Font = new Font("Trebuchet MS", 10F);
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            MaximizeBox = false;
-            MinimizeBox = false;
-            StartPosition = FormStartPosition.CenterParent;
-            errores.ContainerControl = this;
-            Label lblNombre = new Label { Text = "Nombre", Location = new Point(24, 20), AutoSize = true };
-            txtNombre.Location = new Point(24, 46);
-            txtNombre.Size = new Size(458, 38);
-            txtNombre.BorderRadius = 5;
-            txtNombre.MaxLength = 100;
-            Controls.Add(lblNombre);
-            Controls.Add(txtNombre);
-            Label lblDescripcion = new Label { Text = "Descripción", Location = new Point(24, 98), AutoSize = true };
-            txtDescripcion.Location = new Point(24, 124);
-            txtDescripcion.Size = new Size(458, 38);
-            txtDescripcion.BorderRadius = 5;
-            txtDescripcion.MaxLength = 500;
-            Controls.Add(lblDescripcion);
-            Controls.Add(txtDescripcion);
-            Label lblFotos = new Label { Text = "Fotos (JPG, JPEG o PNG; máximo 2 MB cada una)", Location = new Point(24, 180), AutoSize = true };
-            lblContador.Location = new Point(432, 210);
-            lblContador.Size = new Size(50, 28);
-            lblContador.Text = "0/5";
-            pnlFotos.Location = new Point(24, 244);
-            pnlFotos.Size = new Size(458, 132);
-            pnlFotos.AutoScroll = true;
-            pnlFotos.WrapContents = false;
-            pnlFotos.BorderStyle = BorderStyle.FixedSingle;
-            Guna2Button btnAgregarFoto = new Guna2Button { Text = "Agregar foto", Location = new Point(24, 208), Size = new Size(150, 30), BorderRadius = 8, FillColor = Color.FromArgb(40, 112, 237) };
-            Guna2Button btnQuitarFoto = new Guna2Button { Text = "Quitar seleccionada", Location = new Point(184, 208), Size = new Size(198, 30), BorderRadius = 8, FillColor = Color.FromArgb(220, 56, 56) };
-            btnAgregarFoto.Click += AgregarFoto_Click;
-            btnQuitarFoto.Click += QuitarFoto_Click;
-            Controls.AddRange(new Control[] { lblFotos, lblContador, pnlFotos, btnAgregarFoto, btnQuitarFoto });
-            Guna2Button btnGuardar = new Guna2Button { Text = "Guardar", Location = new Point(210, 398), Size = new Size(132, 40), BorderRadius = 12, FillColor = Color.FromArgb(40, 112, 237) };
-            Guna2Button btnCancelar = new Guna2Button { Text = "Cancelar", Location = new Point(350, 398), Size = new Size(132, 40), BorderRadius = 12, FillColor = Color.FromArgb(19, 44, 82), DialogResult = DialogResult.Cancel };
-            btnGuardar.Click += Guardar_Click;
-            Controls.Add(btnGuardar);
-            Controls.Add(btnCancelar);
-            AcceptButton = btnGuardar;
-            CancelButton = btnCancelar;
+            FormClosed += Formulario_FormClosed;
         }
 
         private void Guardar_Click(object? sender, EventArgs e)
@@ -232,6 +178,11 @@ namespace SistemaInventario.Presentacion
                 fotoSeleccionada.BackColor = Color.LightBlue;
         }
 
+        private void Formulario_FormClosed(object? sender, FormClosedEventArgs e)
+        {
+            LimpiarMiniaturas();
+        }
+
         private void LimpiarMiniaturas()
         {
             fotoSeleccionada = null;
@@ -244,14 +195,24 @@ namespace SistemaInventario.Presentacion
             }
         }
 
-        protected override void Dispose(bool disposing)
+        private void txtNombre_TextChanged(object sender, EventArgs e)
         {
-            if (disposing)
-            {
-                LimpiarMiniaturas();
-                errores.Dispose();
-            }
-            base.Dispose(disposing);
+            if (txtNombre.TextLength > 100)
+                label1.ForeColor = Color.DarkRed;
+            else
+                label1.ForeColor = Color.Black;
+
+            label1.Text = txtNombre.TextLength.ToString() + "/100";
+        }
+
+        private void txtDescripcion_TextChanged(object sender, EventArgs e)
+        {
+            if (txtDescripcion.TextLength > 500)
+                label2.ForeColor = Color.DarkRed;
+            else
+                label2.ForeColor = Color.Black;
+
+            label2.Text = txtDescripcion.TextLength.ToString() + "/500";
         }
     }
 }

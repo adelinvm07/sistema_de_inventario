@@ -59,9 +59,19 @@ partial class ProductosForm
         guna2Button2 = new Guna.UI2.WinForms.Guna2Button();
         guna2Button3 = new Guna.UI2.WinForms.Guna2Button();
         dgvCategorias = new Guna.UI2.WinForms.Guna2DataGridView();
+        lblCategoria = new Label();
+        lblSuplidor = new Label();
+        lblDesde = new Label();
+        lblHasta = new Label();
+        cmbCategorias = new ComboBox();
+        cmbSuplidores = new ComboBox();
+        numPrecioMinimo = new NumericUpDown();
+        numPrecioMaximo = new NumericUpDown();
         guna2Panel1.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)guna2PictureBox1).BeginInit();
         ((System.ComponentModel.ISupportInitialize)dgvCategorias).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)numPrecioMinimo).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)numPrecioMaximo).BeginInit();
         SuspendLayout();
         // 
         // guna2Panel1
@@ -256,7 +266,7 @@ partial class ProductosForm
         guna2TextBox1.Font = new Font("Segoe UI", 9F);
         guna2TextBox1.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
         guna2TextBox1.IconLeft = Properties.Resources.search_29dp_666666_FILL0_wght400_GRAD0_opsz24;
-        guna2TextBox1.Location = new Point(336, 103);
+        guna2TextBox1.Location = new Point(347, 103);
         guna2TextBox1.Margin = new Padding(3, 4, 3, 4);
         guna2TextBox1.MaxLength = 100;
         guna2TextBox1.Name = "guna2TextBox1";
@@ -361,7 +371,7 @@ partial class ProductosForm
         dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
         dgvCategorias.DefaultCellStyle = dataGridViewCellStyle3;
         dgvCategorias.GridColor = Color.FromArgb(231, 229, 255);
-        dgvCategorias.Location = new Point(336, 224);
+        dgvCategorias.Location = new Point(336, 253);
         dgvCategorias.Name = "dgvCategorias";
         dgvCategorias.ReadOnly = true;
         dgvCategorias.RowHeadersVisible = false;
@@ -374,6 +384,86 @@ partial class ProductosForm
         dgvCategorias.ThemeStyle.ReadOnly = true;
         dgvCategorias.ThemeStyle.RowsStyle.Font = new Font("Segoe UI", 9F);
         dgvCategorias.ThemeStyle.RowsStyle.Height = 29;
+        // 
+        // lblCategoria
+        // 
+        lblCategoria.AutoSize = true;
+        lblCategoria.Location = new Point(310, 172);
+        lblCategoria.Name = "lblCategoria";
+        lblCategoria.Size = new Size(74, 20);
+        lblCategoria.TabIndex = 33;
+        lblCategoria.Text = "Categoría";
+        // 
+        // lblSuplidor
+        // 
+        lblSuplidor.AutoSize = true;
+        lblSuplidor.Location = new Point(538, 172);
+        lblSuplidor.Name = "lblSuplidor";
+        lblSuplidor.Size = new Size(65, 20);
+        lblSuplidor.TabIndex = 34;
+        lblSuplidor.Text = "Suplidor";
+        // 
+        // lblDesde
+        // 
+        lblDesde.AutoSize = true;
+        lblDesde.Location = new Point(310, 209);
+        lblDesde.Name = "lblDesde";
+        lblDesde.Size = new Size(51, 20);
+        lblDesde.TabIndex = 35;
+        lblDesde.Text = "Desde";
+        // 
+        // lblHasta
+        // 
+        lblHasta.AutoSize = true;
+        lblHasta.Location = new Point(538, 209);
+        lblHasta.Name = "lblHasta";
+        lblHasta.Size = new Size(47, 20);
+        lblHasta.TabIndex = 36;
+        lblHasta.Text = "Hasta";
+        // 
+        // cmbCategorias
+        // 
+        cmbCategorias.AccessibleName = "Filtrar por categoría";
+        cmbCategorias.DropDownStyle = ComboBoxStyle.DropDownList;
+        cmbCategorias.Location = new Point(387, 168);
+        cmbCategorias.Name = "cmbCategorias";
+        cmbCategorias.Size = new Size(140, 28);
+        cmbCategorias.TabIndex = 37;
+        cmbCategorias.SelectedIndexChanged += Buscar_TextChanged;
+        // 
+        // cmbSuplidores
+        // 
+        cmbSuplidores.AccessibleName = "Filtrar por suplidor";
+        cmbSuplidores.DropDownStyle = ComboBoxStyle.DropDownList;
+        cmbSuplidores.Location = new Point(610, 168);
+        cmbSuplidores.Name = "cmbSuplidores";
+        cmbSuplidores.Size = new Size(154, 28);
+        cmbSuplidores.TabIndex = 38;
+        cmbSuplidores.SelectedIndexChanged += Buscar_TextChanged;
+        // 
+        // numPrecioMinimo
+        // 
+        numPrecioMinimo.AccessibleName = "Precio desde; cero sin límite";
+        numPrecioMinimo.DecimalPlaces = 2;
+        numPrecioMinimo.Location = new Point(387, 205);
+        numPrecioMinimo.Maximum = new decimal(new int[] { 1410065407, 2, 0, 131072 });
+        numPrecioMinimo.Name = "numPrecioMinimo";
+        numPrecioMinimo.Size = new Size(140, 27);
+        numPrecioMinimo.TabIndex = 39;
+        numPrecioMinimo.ThousandsSeparator = true;
+        numPrecioMinimo.ValueChanged += Buscar_TextChanged;
+        // 
+        // numPrecioMaximo
+        // 
+        numPrecioMaximo.AccessibleName = "Precio hasta; cero sin límite";
+        numPrecioMaximo.DecimalPlaces = 2;
+        numPrecioMaximo.Location = new Point(610, 205);
+        numPrecioMaximo.Maximum = new decimal(new int[] { 1410065407, 2, 0, 131072 });
+        numPrecioMaximo.Name = "numPrecioMaximo";
+        numPrecioMaximo.Size = new Size(154, 27);
+        numPrecioMaximo.TabIndex = 40;
+        numPrecioMaximo.ThousandsSeparator = true;
+        numPrecioMaximo.ValueChanged += Buscar_TextChanged;
         // 
         // ProductosForm
         // 
@@ -388,6 +478,14 @@ partial class ProductosForm
         Controls.Add(guna2TextBox1);
         Controls.Add(bienvenidaLabel);
         Controls.Add(guna2Panel1);
+        Controls.Add(lblCategoria);
+        Controls.Add(lblSuplidor);
+        Controls.Add(lblDesde);
+        Controls.Add(lblHasta);
+        Controls.Add(cmbCategorias);
+        Controls.Add(cmbSuplidores);
+        Controls.Add(numPrecioMinimo);
+        Controls.Add(numPrecioMaximo);
         FormBorderStyle = FormBorderStyle.FixedDialog;
         Margin = new Padding(3, 4, 3, 4);
         MaximizeBox = false;
@@ -397,7 +495,10 @@ partial class ProductosForm
         guna2Panel1.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)guna2PictureBox1).EndInit();
         ((System.ComponentModel.ISupportInitialize)dgvCategorias).EndInit();
+        ((System.ComponentModel.ISupportInitialize)numPrecioMinimo).EndInit();
+        ((System.ComponentModel.ISupportInitialize)numPrecioMaximo).EndInit();
         ResumeLayout(false);
+        PerformLayout();
     }
     private Guna.UI2.WinForms.Guna2Panel guna2Panel1 = null!;
     private Label tituloLabel = null!;
@@ -415,4 +516,12 @@ partial class ProductosForm
     private Guna.UI2.WinForms.Guna2Button guna2Button2 = null!;
     private Guna.UI2.WinForms.Guna2Button guna2Button3 = null!;
     private Guna.UI2.WinForms.Guna2DataGridView dgvCategorias = null!;
+    private Label lblCategoria = null!;
+    private Label lblSuplidor = null!;
+    private Label lblDesde = null!;
+    private Label lblHasta = null!;
+    private ComboBox cmbCategorias = null!;
+    private ComboBox cmbSuplidores = null!;
+    private NumericUpDown numPrecioMinimo = null!;
+    private NumericUpDown numPrecioMaximo = null!;
 }

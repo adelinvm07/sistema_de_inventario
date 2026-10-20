@@ -24,6 +24,36 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="MostrarCategoriaForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="MostrarCategoriaForm.Designer.cs">
+      <DependentUpon>MostrarCategoriaForm.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="MostrarCategoriaForm.resx">
+      <DependentUpon>MostrarCategoriaForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="MostrarProductoForm.cs"><SubType>Form</SubType></Compile>
+    <Compile Update="MostrarProductoForm.Designer.cs"><DependentUpon>MostrarProductoForm.cs</DependentUpon></Compile>
+    <EmbeddedResource Update="MostrarProductoForm.resx"><DependentUpon>MostrarProductoForm.cs</DependentUpon></EmbeddedResource>
+    <Compile Update="MostrarSuplidorForm.cs"><SubType>Form</SubType></Compile>
+    <Compile Update="MostrarSuplidorForm.Designer.cs"><DependentUpon>MostrarSuplidorForm.cs</DependentUpon></Compile>
+    <EmbeddedResource Update="MostrarSuplidorForm.resx"><DependentUpon>MostrarSuplidorForm.cs</DependentUpon></EmbeddedResource>
+    <Compile Update="DetalleCategoriaForm.cs"><SubType>Form</SubType></Compile>
+    <Compile Update="DetalleCategoriaForm.Designer.cs"><DependentUpon>DetalleCategoriaForm.cs</DependentUpon></Compile>
+    <EmbeddedResource Update="DetalleCategoriaForm.resx"><DependentUpon>DetalleCategoriaForm.cs</DependentUpon></EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="PapeleraForm.cs"><SubType>Form</SubType></Compile>
+    <Compile Update="PapeleraForm.Designer.cs"><DependentUpon>PapeleraForm.cs</DependentUpon></Compile>
+    <EmbeddedResource Update="PapeleraForm.resx"><DependentUpon>PapeleraForm.cs</DependentUpon></EmbeddedResource>
+  </ItemGroup>
+
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0-windows</TargetFramework>

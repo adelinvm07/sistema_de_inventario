@@ -1,4 +1,4 @@
-using SistemaInventario.Entidades.Utilidades;
+﻿using SistemaInventario.Entidades.Utilidades;
 using SistemaInventario.LogicaNegocio;
 
 namespace SistemaInventario.Presentacion;
@@ -15,6 +15,7 @@ public partial class FormularioPrincipal : Form
     public FormularioPrincipal(FabricaServicios fabrica)
     {
         InitializeComponent();
+        DoubleBuffered = true;
         _categorias = fabrica.Categorias;
         _suplidores = fabrica.Suplidores;
         _productos = fabrica.Productos;
@@ -38,54 +39,52 @@ public partial class FormularioPrincipal : Form
         }
     }
 
-    private void AbrirPantalla(string pantalla)
+    /// <summary>
+    /// Muestra el listado dentro de la ventana principal.
+    /// </summary>
+    public void AbrirPantalla(string pantalla)
     {
         try
         {
-            while (pantalla != "")
-            {
-                if (pantalla == "Categorias")
-                {
-                    using (CategoriasForm formulario = new CategoriasForm(_categorias))
-                    {
-                        formulario.ShowDialog(this);
-                        pantalla = formulario.PantallaSeleccionada;
-                    }
-                }
-                else if (pantalla == "Suplidores")
-                {
-                    using (SuplidoresForm formulario = new SuplidoresForm(_suplidores))
-                    {
-                        formulario.ShowDialog(this);
-                        pantalla = formulario.PantallaSeleccionada;
-                    }
-                }
-                else if (pantalla == "Productos")
-                {
-                    using (ProductosForm formulario = new ProductosForm(_productos))
-                    {
-                        formulario.ShowDialog(this);
-                        pantalla = formulario.PantallaSeleccionada;
-                    }
-                }
-                else if (pantalla == "Papelera")
-                {
-                    using (PapeleraForm formulario = new PapeleraForm(_categorias, _suplidores, _productos))
-                    {
-                        formulario.ShowDialog(this);
-                        pantalla = formulario.PantallaSeleccionada;
-                    }
-                }
-                else
-                    pantalla = "";
-            }
-            ActualizarTotales();
+            if (pantalla == "Categorias")
+                MostrarFormulario(new CategoriasForm(_categorias, this));
+            else if (pantalla == "Suplidores")
+                MostrarFormulario(new SuplidoresForm(_suplidores, this));
+            else if (pantalla == "Productos")
+                MostrarFormulario(new ProductosForm(_productos, this));
+            else if (pantalla == "Papelera")
+                MostrarFormulario(new PapeleraForm(_categorias, _suplidores, _productos, this));
         }
         catch (Exception ex)
         {
             Logger.RegistrarLog(ex);
             MessageBox.Show("No se pudo abrir la pantalla. Inténtelo nuevamente.", "Inventario", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+    }
+
+    private void MostrarFormulario(Form formulario)
+    {
+        // Quitar la pantalla anterior.
+        if (pnlPantalla.Controls.Count > 0)
+            pnlPantalla.Controls[0].Dispose();
+
+        // Colocar el formulario dentro del panel.
+        formulario.TopLevel = false;
+        formulario.FormBorderStyle = FormBorderStyle.None;
+        formulario.Dock = DockStyle.Fill;
+        pnlPantalla.Controls.Add(formulario);
+        formulario.Show();
+        pnlPantalla.BringToFront();
+        pnlPantalla.Visible = true;
+    }
+
+    public void MostrarInicio()
+    {
+        pnlPantalla.Visible = false;
+        if (pnlPantalla.Controls.Count > 0)
+            pnlPantalla.Controls[0].Dispose();
+
+        ActualizarTotales();
     }
 
     private void FormularioPrincipal_Load(object? sender, EventArgs e)

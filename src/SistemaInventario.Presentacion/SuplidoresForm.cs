@@ -1,4 +1,4 @@
-using SistemaInventario.Entidades;
+﻿using SistemaInventario.Entidades;
 using SistemaInventario.Entidades.Utilidades;
 using SistemaInventario.LogicaNegocio;
 
@@ -7,15 +7,17 @@ namespace SistemaInventario.Presentacion
     public partial class SuplidoresForm : Form
     {
         private readonly SuplidorServicio _servicio;
-        public string PantallaSeleccionada { get; private set; } = "";
+        private readonly FormularioPrincipal _principal;
 
         /// <summary>
         /// Recibe el servicio y conecta las acciones del listado.
         /// </summary>
-        public SuplidoresForm(SuplidorServicio servicio)
+        public SuplidoresForm(SuplidorServicio servicio, FormularioPrincipal principal)
         {
             InitializeComponent();
             _servicio = servicio;
+            _principal = principal;
+            DoubleBuffered = true;
             ConfigurarListado();
             Load += Formulario_Load;
             guna2TextBox1.TextChanged += Buscar_TextChanged;
@@ -37,11 +39,26 @@ namespace SistemaInventario.Presentacion
             dgvCategorias.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvCategorias.ColumnHeadersHeight = 32;
             dgvCategorias.Columns.Clear();
-            dgvCategorias.Columns[dgvCategorias.Columns.Add("NombreEmpresa", "Empresa")].DataPropertyName = "NombreEmpresa";
-            dgvCategorias.Columns[dgvCategorias.Columns.Add("NombreContacto", "Contacto")].DataPropertyName = "NombreContacto";
-            dgvCategorias.Columns[dgvCategorias.Columns.Add("Telefono", "Teléfono")].DataPropertyName = "Telefono";
-            dgvCategorias.Columns[dgvCategorias.Columns.Add("CorreoElectronico", "Correo electrónico")].DataPropertyName = "CorreoElectronico";
-            dgvCategorias.Columns[dgvCategorias.Columns.Add("SitioWeb", "Sitio web")].DataPropertyName = "SitioWeb";
+            DataGridViewTextBoxColumn columnaNombreEmpresa = new DataGridViewTextBoxColumn();
+            columnaNombreEmpresa.HeaderText = "Empresa";
+            columnaNombreEmpresa.DataPropertyName = "NombreEmpresa";
+            dgvCategorias.Columns.Add(columnaNombreEmpresa);
+            DataGridViewTextBoxColumn columnaNombreContacto = new DataGridViewTextBoxColumn();
+            columnaNombreContacto.HeaderText = "Contacto";
+            columnaNombreContacto.DataPropertyName = "NombreContacto";
+            dgvCategorias.Columns.Add(columnaNombreContacto);
+            DataGridViewTextBoxColumn columnaTelefono = new DataGridViewTextBoxColumn();
+            columnaTelefono.HeaderText = "Teléfono";
+            columnaTelefono.DataPropertyName = "Telefono";
+            dgvCategorias.Columns.Add(columnaTelefono);
+            DataGridViewTextBoxColumn columnaCorreoElectronico = new DataGridViewTextBoxColumn();
+            columnaCorreoElectronico.HeaderText = "Correo electrónico";
+            columnaCorreoElectronico.DataPropertyName = "CorreoElectronico";
+            dgvCategorias.Columns.Add(columnaCorreoElectronico);
+            DataGridViewTextBoxColumn columnaSitioWeb = new DataGridViewTextBoxColumn();
+            columnaSitioWeb.HeaderText = "Sitio web";
+            columnaSitioWeb.DataPropertyName = "SitioWeb";
+            dgvCategorias.Columns.Add(columnaSitioWeb);
         }
 
         private void Formulario_Load(object? sender, EventArgs e)
@@ -95,31 +112,27 @@ namespace SistemaInventario.Presentacion
 
         private void IrCategorias_Click(object? sender, EventArgs e)
         {
-            PantallaSeleccionada = "Categorias";
-            Close();
+            _principal.AbrirPantalla("Categorias");
         }
 
         private void IrSuplidores_Click(object? sender, EventArgs e)
         {
-            PantallaSeleccionada = "Suplidores";
-            Close();
+            _principal.AbrirPantalla("Suplidores");
         }
 
         private void IrProductos_Click(object? sender, EventArgs e)
         {
-            PantallaSeleccionada = "Productos";
-            Close();
+            _principal.AbrirPantalla("Productos");
         }
 
         private void IrPapelera_Click(object? sender, EventArgs e)
         {
-            PantallaSeleccionada = "Papelera";
-            Close();
+            _principal.AbrirPantalla("Papelera");
         }
 
         private void Volver_Click(object? sender, EventArgs e)
         {
-            Close();
+            _principal.MostrarInicio();
         }
 
         private void Nuevo_Click(object? sender, EventArgs e)
@@ -141,9 +154,9 @@ namespace SistemaInventario.Presentacion
         {
             try
             {
-                using (EditarSuplidorForm formulario = new EditarSuplidorForm(_servicio, entidad))
+                using (MostrarSuplidorForm formulario = new MostrarSuplidorForm(_servicio, entidad))
                 {
-                    if (formulario.ShowDialog(this) == DialogResult.OK)
+                    if (formulario.ShowDialog(_principal) == DialogResult.OK)
                         CargarListado();
                 }
             }

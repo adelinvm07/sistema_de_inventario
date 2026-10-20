@@ -1,4 +1,4 @@
-using SistemaInventario.Entidades;
+﻿using SistemaInventario.Entidades;
 using SistemaInventario.Entidades.Utilidades;
 using SistemaInventario.LogicaNegocio;
 
@@ -7,16 +7,19 @@ namespace SistemaInventario.Presentacion
     public partial class CategoriasForm : Form
     {
         private readonly CategoriaServicio _servicio;
-        public string PantallaSeleccionada { get; private set; } = "";
+        private readonly FormularioPrincipal _principal;
 
         /// <summary>
         /// Recibe el servicio y conecta las acciones del listado.
         /// </summary>
-        public CategoriasForm(CategoriaServicio servicio)
+        public CategoriasForm(CategoriaServicio servicio, FormularioPrincipal principal)
         {
             InitializeComponent();
             _servicio = servicio;
+            _principal = principal;
+            DoubleBuffered = true;
             ConfigurarListado();
+            dgvCategorias.CellClick += VerCategoria_Click;
             Load += Formulario_Load;
             guna2TextBox1.TextChanged += Buscar_TextChanged;
             guna2Button3.Click += Eliminar_Click;
@@ -37,8 +40,14 @@ namespace SistemaInventario.Presentacion
             dgvCategorias.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvCategorias.ColumnHeadersHeight = 32;
             dgvCategorias.Columns.Clear();
-            dgvCategorias.Columns[dgvCategorias.Columns.Add("Nombre", "Nombre")].DataPropertyName = "Nombre";
-            dgvCategorias.Columns[dgvCategorias.Columns.Add("Descripcion", "Descripción")].DataPropertyName = "Descripcion";
+            DataGridViewTextBoxColumn columnaNombre = new DataGridViewTextBoxColumn();
+            columnaNombre.HeaderText = "Nombre";
+            columnaNombre.DataPropertyName = "Nombre";
+            dgvCategorias.Columns.Add(columnaNombre);
+            DataGridViewTextBoxColumn columnaDescripcion = new DataGridViewTextBoxColumn();
+            columnaDescripcion.HeaderText = "Descripción";
+            columnaDescripcion.DataPropertyName = "Descripcion";
+            dgvCategorias.Columns.Add(columnaDescripcion);
         }
 
         private void Formulario_Load(object? sender, EventArgs e)
@@ -92,31 +101,48 @@ namespace SistemaInventario.Presentacion
 
         private void IrCategorias_Click(object? sender, EventArgs e)
         {
-            PantallaSeleccionada = "Categorias";
-            Close();
+            _principal.AbrirPantalla("Categorias");
         }
 
         private void IrSuplidores_Click(object? sender, EventArgs e)
         {
-            PantallaSeleccionada = "Suplidores";
-            Close();
+            _principal.AbrirPantalla("Suplidores");
         }
 
         private void IrProductos_Click(object? sender, EventArgs e)
         {
-            PantallaSeleccionada = "Productos";
-            Close();
+            _principal.AbrirPantalla("Productos");
         }
 
         private void IrPapelera_Click(object? sender, EventArgs e)
         {
-            PantallaSeleccionada = "Papelera";
-            Close();
+            _principal.AbrirPantalla("Papelera");
         }
 
         private void Volver_Click(object? sender, EventArgs e)
         {
-            Close();
+            _principal.MostrarInicio();
+        }
+
+        private void VerCategoria_Click(object? sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0)
+                return;
+            Categoria? categoria = dgvCategorias.Rows[e.RowIndex].DataBoundItem as Categoria;
+            if (categoria == null)
+                return;
+            try
+            {
+                using (DetalleCategoriaForm formulario = new DetalleCategoriaForm(_servicio, categoria))
+                {
+                    formulario.ShowDialog(_principal);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.RegistrarLog(ex);
+                MessageBox.Show("No se pudo abrir la información de la categoría.", "Categorías", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void Nuevo_Click(object? sender, EventArgs e)
@@ -138,9 +164,9 @@ namespace SistemaInventario.Presentacion
         {
             try
             {
-                using (EditarCategoriaForm formulario = new EditarCategoriaForm(_servicio, entidad))
+                using (MostrarCategoriaForm formulario = new MostrarCategoriaForm(_servicio, entidad))
                 {
-                    if (formulario.ShowDialog(this) == DialogResult.OK)
+                    if (formulario.ShowDialog(_principal) == DialogResult.OK)
                         CargarListado();
                 }
             }

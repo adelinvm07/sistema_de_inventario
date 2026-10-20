@@ -1,4 +1,4 @@
-using SistemaInventario.Entidades;
+﻿using SistemaInventario.Entidades;
 using SistemaInventario.Entidades.Utilidades;
 using SistemaInventario.LogicaNegocio;
 
@@ -7,11 +7,7 @@ namespace SistemaInventario.Presentacion
     public partial class ProductosForm : Form
     {
         private readonly ProductoServicio _servicio;
-        public string PantallaSeleccionada { get; private set; } = "";
-        private readonly ComboBox cmbCategorias = new ComboBox();
-        private readonly ComboBox cmbSuplidores = new ComboBox();
-        private readonly NumericUpDown numPrecioMinimo = new NumericUpDown();
-        private readonly NumericUpDown numPrecioMaximo = new NumericUpDown();
+        private readonly FormularioPrincipal _principal;
         private List<Categoria> categorias = new List<Categoria>();
         private List<Suplidores> suplidores = new List<Suplidores>();
         private bool cargando;
@@ -19,10 +15,12 @@ namespace SistemaInventario.Presentacion
         /// <summary>
         /// Recibe el servicio y conecta las acciones del listado.
         /// </summary>
-        public ProductosForm(ProductoServicio servicio)
+        public ProductosForm(ProductoServicio servicio, FormularioPrincipal principal)
         {
             InitializeComponent();
             _servicio = servicio;
+            _principal = principal;
+            DoubleBuffered = true;
             ConfigurarListado();
             Load += Formulario_Load;
             guna2TextBox1.TextChanged += Buscar_TextChanged;
@@ -35,7 +33,6 @@ namespace SistemaInventario.Presentacion
             guna2Button1.Click += IrPapelera_Click;
             btnVolver.Click += Volver_Click;
             tituloLabel.Click += Volver_Click;
-            ConfigurarFiltros();
         }
 
         private void ConfigurarListado()
@@ -45,10 +42,22 @@ namespace SistemaInventario.Presentacion
             dgvCategorias.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvCategorias.ColumnHeadersHeight = 32;
             dgvCategorias.Columns.Clear();
-            dgvCategorias.Columns[dgvCategorias.Columns.Add("Nombre", "Producto")].DataPropertyName = "Nombre";
-            dgvCategorias.Columns[dgvCategorias.Columns.Add("IdCategoria", "Categoría")].DataPropertyName = "IdCategoria";
-            dgvCategorias.Columns[dgvCategorias.Columns.Add("IdSuplidor", "Suplidor")].DataPropertyName = "IdSuplidor";
-            dgvCategorias.Columns[dgvCategorias.Columns.Add("PrecioUnitario", "Precio unitario")].DataPropertyName = "PrecioUnitario";
+            DataGridViewTextBoxColumn columnaNombre = new DataGridViewTextBoxColumn();
+            columnaNombre.HeaderText = "Producto";
+            columnaNombre.DataPropertyName = "Nombre";
+            dgvCategorias.Columns.Add(columnaNombre);
+            DataGridViewTextBoxColumn columnaIdCategoria = new DataGridViewTextBoxColumn();
+            columnaIdCategoria.HeaderText = "Categoría";
+            columnaIdCategoria.DataPropertyName = "IdCategoria";
+            dgvCategorias.Columns.Add(columnaIdCategoria);
+            DataGridViewTextBoxColumn columnaIdSuplidor = new DataGridViewTextBoxColumn();
+            columnaIdSuplidor.HeaderText = "Suplidor";
+            columnaIdSuplidor.DataPropertyName = "IdSuplidor";
+            dgvCategorias.Columns.Add(columnaIdSuplidor);
+            DataGridViewTextBoxColumn columnaPrecioUnitario = new DataGridViewTextBoxColumn();
+            columnaPrecioUnitario.HeaderText = "Precio unitario";
+            columnaPrecioUnitario.DataPropertyName = "PrecioUnitario";
+            dgvCategorias.Columns.Add(columnaPrecioUnitario);
             dgvCategorias.Columns[3].DefaultCellStyle.Format = "N2";
             dgvCategorias.CellFormatting += Listado_CellFormatting;
         }
@@ -145,31 +154,27 @@ namespace SistemaInventario.Presentacion
 
         private void IrCategorias_Click(object? sender, EventArgs e)
         {
-            PantallaSeleccionada = "Categorias";
-            Close();
+            _principal.AbrirPantalla("Categorias");
         }
 
         private void IrSuplidores_Click(object? sender, EventArgs e)
         {
-            PantallaSeleccionada = "Suplidores";
-            Close();
+            _principal.AbrirPantalla("Suplidores");
         }
 
         private void IrProductos_Click(object? sender, EventArgs e)
         {
-            PantallaSeleccionada = "Productos";
-            Close();
+            _principal.AbrirPantalla("Productos");
         }
 
         private void IrPapelera_Click(object? sender, EventArgs e)
         {
-            PantallaSeleccionada = "Papelera";
-            Close();
+            _principal.AbrirPantalla("Papelera");
         }
 
         private void Volver_Click(object? sender, EventArgs e)
         {
-            Close();
+            _principal.MostrarInicio();
         }
 
         private void Nuevo_Click(object? sender, EventArgs e)
@@ -191,9 +196,9 @@ namespace SistemaInventario.Presentacion
         {
             try
             {
-                using (EditarProductoForm formulario = new EditarProductoForm(_servicio, entidad))
+                using (MostrarProductoForm formulario = new MostrarProductoForm(_servicio, entidad))
                 {
-                    if (formulario.ShowDialog(this) == DialogResult.OK)
+                    if (formulario.ShowDialog(_principal) == DialogResult.OK)
                         CargarListado();
                 }
             }
@@ -202,41 +207,6 @@ namespace SistemaInventario.Presentacion
                 Logger.RegistrarLog(ex);
                 MessageBox.Show("No se pudo abrir el formulario de edición.", "Productos", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        private void ConfigurarFiltros()
-        {
-            Label lblCategoria = new Label { Text = "Categoría", Location = new Point(336, 157), AutoSize = true };
-            Label lblSuplidor = new Label { Text = "Suplidor", Location = new Point(564, 157), AutoSize = true };
-            Label lblDesde = new Label { Text = "Desde", Location = new Point(336, 194), AutoSize = true };
-            Label lblHasta = new Label { Text = "Hasta", Location = new Point(564, 194), AutoSize = true };
-            cmbCategorias.Location = new Point(413, 153);
-            cmbCategorias.Size = new Size(140, 28);
-            cmbCategorias.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbSuplidores.Location = new Point(636, 153);
-            cmbSuplidores.Size = new Size(154, 28);
-            cmbSuplidores.DropDownStyle = ComboBoxStyle.DropDownList;
-            numPrecioMinimo.Location = new Point(413, 190);
-            numPrecioMinimo.Size = new Size(140, 28);
-            numPrecioMinimo.DecimalPlaces = 2;
-            numPrecioMinimo.Maximum = 99999999.99m;
-            numPrecioMinimo.ThousandsSeparator = true;
-            numPrecioMaximo.Location = new Point(636, 190);
-            numPrecioMaximo.Size = new Size(154, 28);
-            numPrecioMaximo.DecimalPlaces = 2;
-            numPrecioMaximo.Maximum = 99999999.99m;
-            numPrecioMaximo.ThousandsSeparator = true;
-            Label lblLimites = new Label { Text = "0 = sin límite", Location = new Point(803, 195), AutoSize = true };
-            Controls.Add(lblLimites);
-            cmbCategorias.AccessibleName = "Filtrar por categoría";
-            cmbSuplidores.AccessibleName = "Filtrar por suplidor";
-            numPrecioMinimo.AccessibleName = "Precio desde; cero sin límite";
-            numPrecioMaximo.AccessibleName = "Precio hasta; cero sin límite";
-            Controls.AddRange(new Control[] { lblCategoria, lblSuplidor, lblDesde, lblHasta, cmbCategorias, cmbSuplidores, numPrecioMinimo, numPrecioMaximo });
-            cmbCategorias.SelectedIndexChanged += Buscar_TextChanged;
-            cmbSuplidores.SelectedIndexChanged += Buscar_TextChanged;
-            numPrecioMinimo.ValueChanged += Buscar_TextChanged;
-            numPrecioMaximo.ValueChanged += Buscar_TextChanged;
         }
 
         private void Listado_CellFormatting(object? sender, DataGridViewCellFormattingEventArgs e)

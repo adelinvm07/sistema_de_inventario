@@ -28,6 +28,28 @@ namespace SistemaInventario.LogicaNegocio
         }
 
         /// <summary>
+        /// Consulta los datos actuales de una categoría.
+        /// </summary>
+        public Categoria? ObtenerPorId(int id)
+        {
+            return _repo.ObtenerPorId(id);
+        }
+
+        /// <summary>
+        /// Devuelve los productos activos que pertenecen a la categoría.
+        /// </summary>
+        public List<Productos> ObtenerProductos(int idCategoria)
+        {
+            List<Productos> productos = new List<Productos>();
+            foreach (Productos producto in _productos.ObtenerTodos())
+            {
+                if (producto.IdCategoria == idCategoria)
+                    productos.Add(producto);
+            }
+            return productos;
+        }
+
+        /// <summary>
         /// Valida y guarda la categoría antes de guardar sus fotos nuevas.
         /// </summary>
         public Dictionary<string, string> Guardar(Categoria categoria, List<string>? rutasFotos = null, List<int>? idsFotosQuitar = null)
@@ -42,7 +64,7 @@ namespace SistemaInventario.LogicaNegocio
             foreach (Categoria registro in categorias)
             {
                 if (registro.Id != categoria.Id && String.Equals(registro.Nombre.Trim(), categoria.Nombre, StringComparison.OrdinalIgnoreCase))
-                    errores["Nombre"] = "Ya existe una categoría con ese nombre, incluso en la papelera.";
+                    errores["Nombre"] = "Ya existe una categoría con ese nombre.";
             }
 
             int cantidad = 0;
