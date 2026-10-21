@@ -22,6 +22,42 @@ namespace SistemaInventario.AccesoDatos
 
             return p;
         }
+        public override List<Productos> ObtenerTodos()
+        {
+            List<Productos> productos = new List<Productos>();
+            string consulta = "SELECT p.*, c.nombre AS nombre_categoria, s.nombre_empresa AS nombre_suplidor " +
+                "FROM Productos p " +
+                "INNER JOIN Categorias c ON p.categoria_id = c.id " +
+                "INNER JOIN Suplidores s ON p.suplidor_id = s.id " +
+                "WHERE p.activo = 1";
+
+            try
+            {
+                using (SqlConnection conexion = ConexionBD.ObtenerConexion().CrearConexion())
+                {
+                    conexion.Open();
+                    using (SqlCommand comando = new SqlCommand(consulta, conexion))
+                    using (SqlDataReader lector = comando.ExecuteReader())
+                    {
+                        while (lector.Read())
+                        {
+                            Productos producto = DeFilaAEntidad(lector);
+                            producto.NombreCategoria = lector["nombre_categoria"].ToString() ?? "";
+                            producto.NombreSuplidor = lector["nombre_suplidor"].ToString() ?? "";
+                            productos.Add(producto);
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Logger.RegistrarLog(ex);
+                throw;
+            }
+
+            return productos;
+        }
+
         public override void Insertar(Productos producto)
         {
             string insertar = "INSERT INTO Productos (categoria_id, suplidor_id, nombre, precio_unitario) " +

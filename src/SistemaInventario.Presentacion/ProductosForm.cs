@@ -48,18 +48,17 @@ namespace SistemaInventario.Presentacion
             dgvCategorias.Columns.Add(columnaNombre);
             DataGridViewTextBoxColumn columnaIdCategoria = new DataGridViewTextBoxColumn();
             columnaIdCategoria.HeaderText = "Categoría";
-            columnaIdCategoria.DataPropertyName = "IdCategoria";
+            columnaIdCategoria.DataPropertyName = "NombreCategoria";
             dgvCategorias.Columns.Add(columnaIdCategoria);
             DataGridViewTextBoxColumn columnaIdSuplidor = new DataGridViewTextBoxColumn();
             columnaIdSuplidor.HeaderText = "Suplidor";
-            columnaIdSuplidor.DataPropertyName = "IdSuplidor";
+            columnaIdSuplidor.DataPropertyName = "NombreSuplidor";
             dgvCategorias.Columns.Add(columnaIdSuplidor);
             DataGridViewTextBoxColumn columnaPrecioUnitario = new DataGridViewTextBoxColumn();
             columnaPrecioUnitario.HeaderText = "Precio unitario";
             columnaPrecioUnitario.DataPropertyName = "PrecioUnitario";
             dgvCategorias.Columns.Add(columnaPrecioUnitario);
             dgvCategorias.Columns[3].DefaultCellStyle.Format = "N2";
-            dgvCategorias.CellFormatting += Listado_CellFormatting;
         }
 
         private void Formulario_Load(object? sender, EventArgs e)
@@ -209,34 +208,9 @@ namespace SistemaInventario.Presentacion
             }
         }
 
-        private void Listado_CellFormatting(object? sender, DataGridViewCellFormattingEventArgs e)
+        private void numPrecioMinimo_ValueChanged(object sender, EventArgs e)
         {
-            if (e.Value == null)
-                return;
-            if (dgvCategorias.Columns[e.ColumnIndex].Name == "IdCategoria")
-            {
-                foreach (Categoria categoria in categorias)
-                {
-                    if (categoria.Id == (int)e.Value)
-                    {
-                        e.Value = categoria.Nombre;
-                        e.FormattingApplied = true;
-                        break;
-                    }
-                }
-            }
-            else if (dgvCategorias.Columns[e.ColumnIndex].Name == "IdSuplidor")
-            {
-                foreach (Suplidores suplidor in suplidores)
-                {
-                    if (suplidor.Id == (int)e.Value)
-                    {
-                        e.Value = suplidor.NombreEmpresa;
-                        e.FormattingApplied = true;
-                        break;
-                    }
-                }
-            }
+            CargarListado();
         }
     }
 }

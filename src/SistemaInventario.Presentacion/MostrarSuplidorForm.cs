@@ -10,7 +10,7 @@ namespace SistemaInventario.Presentacion
         private readonly Suplidores _entidad;
 
         /// <summary>
-        /// Recibe el servicio y, al editar, los datos que se mostrarán.
+        /// Recibe el servicio y al editar los datos que se mostrarán
         /// </summary>
         public MostrarSuplidorForm(SuplidorServicio servicio, Suplidores? entidad = null)
         {
@@ -68,5 +68,27 @@ namespace SistemaInventario.Presentacion
             }
         }
 
+        private void txtTelefono_TextChanged(object sender, EventArgs e)
+        {
+            string n = "";
+
+            foreach (char caracter in txtTelefono.Text)
+            {
+                if (char.IsDigit(caracter) && n.Length < 10)
+                    n += caracter;
+            }
+
+            if (n.Length > 6)
+                n = n.Insert(6, "-");
+
+            if (n.Length > 3)
+                n = n.Insert(3, "-");
+
+            if (txtTelefono.Text != n)
+            {
+                txtTelefono.Text = n;
+                txtTelefono.SelectionStart = txtTelefono.Text.Length;
+            }
+        }
     }
 }

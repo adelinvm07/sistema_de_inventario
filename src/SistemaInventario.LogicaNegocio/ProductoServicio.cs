@@ -42,7 +42,7 @@ namespace SistemaInventario.LogicaNegocio
             foreach (Productos registro in registros)
             {
                 if (registro.Id != entidad.Id && String.Equals(registro.Nombre.Trim(), entidad.Nombre, StringComparison.OrdinalIgnoreCase))
-                    errores["Nombre"] = "Ya existe un registro con ese nombre, incluso en la papelera.";
+                    errores["Nombre"] = "Ya existe un registro con ese nombre.";
             }
             Categoria categoria = _categorias.ObtenerPorId(entidad.IdCategoria);
             if (categoria == null || !categoria.Activo)

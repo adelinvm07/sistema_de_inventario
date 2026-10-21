@@ -9,7 +9,7 @@ namespace SistemaInventario.AccesoDatos
         protected abstract T DeFilaAEntidad(SqlDataReader lector);
         public abstract void Insertar(T entidad);
         public abstract void Actualizar(T entidad);
-        public List<T> ObtenerTodos()
+        public virtual List<T> ObtenerTodos()
         {
             var lista = new List<T>();
             string querySelect = $"SELECT * FROM {NombreTabla} WHERE activo = 1";

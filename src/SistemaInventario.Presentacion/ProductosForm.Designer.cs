@@ -43,6 +43,10 @@ partial class ProductosForm
         DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
         DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
         DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+        Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges23 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+        Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges24 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+        Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges25 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+        Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges26 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
         guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
         btnVolver = new Guna.UI2.WinForms.Guna2Button();
         panel2 = new Panel();
@@ -65,13 +69,14 @@ partial class ProductosForm
         lblHasta = new Label();
         cmbCategorias = new ComboBox();
         cmbSuplidores = new ComboBox();
-        numPrecioMinimo = new NumericUpDown();
-        numPrecioMaximo = new NumericUpDown();
+        numPrecioMaximo = new Guna.UI2.WinForms.Guna2NumericUpDown();
+        numPrecioMinimo = new Guna.UI2.WinForms.Guna2NumericUpDown();
+        label1 = new Label();
         guna2Panel1.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)guna2PictureBox1).BeginInit();
         ((System.ComponentModel.ISupportInitialize)dgvCategorias).BeginInit();
-        ((System.ComponentModel.ISupportInitialize)numPrecioMinimo).BeginInit();
         ((System.ComponentModel.ISupportInitialize)numPrecioMaximo).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)numPrecioMinimo).BeginInit();
         SuspendLayout();
         // 
         // guna2Panel1
@@ -406,7 +411,7 @@ partial class ProductosForm
         // lblDesde
         // 
         lblDesde.AutoSize = true;
-        lblDesde.Location = new Point(310, 209);
+        lblDesde.Location = new Point(458, 224);
         lblDesde.Name = "lblDesde";
         lblDesde.Size = new Size(51, 20);
         lblDesde.TabIndex = 35;
@@ -415,7 +420,7 @@ partial class ProductosForm
         // lblHasta
         // 
         lblHasta.AutoSize = true;
-        lblHasta.Location = new Point(538, 209);
+        lblHasta.Location = new Point(685, 224);
         lblHasta.Name = "lblHasta";
         lblHasta.Size = new Size(47, 20);
         lblHasta.TabIndex = 36;
@@ -441,29 +446,48 @@ partial class ProductosForm
         cmbSuplidores.TabIndex = 38;
         cmbSuplidores.SelectedIndexChanged += Buscar_TextChanged;
         // 
-        // numPrecioMinimo
-        // 
-        numPrecioMinimo.AccessibleName = "Precio desde; cero sin límite";
-        numPrecioMinimo.DecimalPlaces = 2;
-        numPrecioMinimo.Location = new Point(387, 205);
-        numPrecioMinimo.Maximum = new decimal(new int[] { 1410065407, 2, 0, 131072 });
-        numPrecioMinimo.Name = "numPrecioMinimo";
-        numPrecioMinimo.Size = new Size(140, 27);
-        numPrecioMinimo.TabIndex = 39;
-        numPrecioMinimo.ThousandsSeparator = true;
-        numPrecioMinimo.ValueChanged += Buscar_TextChanged;
-        // 
         // numPrecioMaximo
         // 
         numPrecioMaximo.AccessibleName = "Precio hasta; cero sin límite";
+        numPrecioMaximo.BackColor = Color.Transparent;
+        numPrecioMaximo.BorderRadius = 5;
+        numPrecioMaximo.CustomizableEdges = customizableEdges23;
         numPrecioMaximo.DecimalPlaces = 2;
-        numPrecioMaximo.Location = new Point(610, 205);
+        numPrecioMaximo.Font = new Font("Segoe UI", 9F);
+        numPrecioMaximo.Location = new Point(738, 218);
+        numPrecioMaximo.Margin = new Padding(3, 4, 3, 4);
         numPrecioMaximo.Maximum = new decimal(new int[] { 1410065407, 2, 0, 131072 });
         numPrecioMaximo.Name = "numPrecioMaximo";
-        numPrecioMaximo.Size = new Size(154, 27);
+        numPrecioMaximo.ShadowDecoration.CustomizableEdges = customizableEdges24;
+        numPrecioMaximo.Size = new Size(154, 28);
         numPrecioMaximo.TabIndex = 40;
-        numPrecioMaximo.ThousandsSeparator = true;
         numPrecioMaximo.ValueChanged += Buscar_TextChanged;
+        // 
+        // numPrecioMinimo
+        // 
+        numPrecioMinimo.AccessibleName = "Precio desde; cero sin límite";
+        numPrecioMinimo.BackColor = Color.Transparent;
+        numPrecioMinimo.BorderRadius = 5;
+        numPrecioMinimo.CustomizableEdges = customizableEdges25;
+        numPrecioMinimo.DecimalPlaces = 2;
+        numPrecioMinimo.Font = new Font("Segoe UI", 9F);
+        numPrecioMinimo.Location = new Point(515, 218);
+        numPrecioMinimo.Margin = new Padding(3, 4, 3, 4);
+        numPrecioMinimo.Maximum = new decimal(new int[] { 1410065407, 2, 0, 131072 });
+        numPrecioMinimo.Name = "numPrecioMinimo";
+        numPrecioMinimo.ShadowDecoration.CustomizableEdges = customizableEdges26;
+        numPrecioMinimo.Size = new Size(140, 28);
+        numPrecioMinimo.TabIndex = 39;
+        numPrecioMinimo.ValueChanged += Buscar_TextChanged;
+        // 
+        // label1
+        // 
+        label1.AutoSize = true;
+        label1.Location = new Point(360, 222);
+        label1.Name = "label1";
+        label1.Size = new Size(53, 20);
+        label1.TabIndex = 41;
+        label1.Text = "Precio:";
         // 
         // ProductosForm
         // 
@@ -471,6 +495,8 @@ partial class ProductosForm
         AutoScaleMode = AutoScaleMode.Font;
         BackColor = Color.FromArgb(244, 246, 249);
         ClientSize = new Size(972, 554);
+        Controls.Add(label1);
+        Controls.Add(numPrecioMinimo);
         Controls.Add(dgvCategorias);
         Controls.Add(guna2Button3);
         Controls.Add(guna2Button2);
@@ -484,7 +510,6 @@ partial class ProductosForm
         Controls.Add(lblHasta);
         Controls.Add(cmbCategorias);
         Controls.Add(cmbSuplidores);
-        Controls.Add(numPrecioMinimo);
         Controls.Add(numPrecioMaximo);
         FormBorderStyle = FormBorderStyle.FixedDialog;
         Margin = new Padding(3, 4, 3, 4);
@@ -495,8 +520,8 @@ partial class ProductosForm
         guna2Panel1.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)guna2PictureBox1).EndInit();
         ((System.ComponentModel.ISupportInitialize)dgvCategorias).EndInit();
-        ((System.ComponentModel.ISupportInitialize)numPrecioMinimo).EndInit();
         ((System.ComponentModel.ISupportInitialize)numPrecioMaximo).EndInit();
+        ((System.ComponentModel.ISupportInitialize)numPrecioMinimo).EndInit();
         ResumeLayout(false);
         PerformLayout();
     }
@@ -522,6 +547,7 @@ partial class ProductosForm
     private Label lblHasta = null!;
     private ComboBox cmbCategorias = null!;
     private ComboBox cmbSuplidores = null!;
-    private NumericUpDown numPrecioMinimo = null!;
-    private NumericUpDown numPrecioMaximo = null!;
+    private Guna.UI2.WinForms.Guna2NumericUpDown numPrecioMinimo = null!;
+    private Guna.UI2.WinForms.Guna2NumericUpDown numPrecioMaximo = null!;
+    private Label label1;
 }

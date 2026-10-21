@@ -15,7 +15,7 @@ public static class Validador
         return Regex.IsMatch(email, pattern, RegexOptions.IgnoreCase);
     }
 
-    // Revisa que el telefono tenga el formato 809/829/849-XXX-XXXX.
+    // Revisa que el telefono tenga el formato 809/829/849-XXX-XXXX
     private static bool ValidarTelefono(string telefono)
     {
         if (String.IsNullOrEmpty(telefono))
@@ -115,7 +115,7 @@ public static class Validador
         if (String.IsNullOrWhiteSpace(s.Telefono))
             errores.Add("Telefono", "Coloque el teléfono.");
         else if (!ValidarTelefono(s.Telefono))
-            errores.Add("Telefono", "Teléfono inválido. Formato: 809-555-1234.");
+            errores.Add("Telefono", "Teléfono inválido.");
 
         if (String.IsNullOrWhiteSpace(s.CorreoElectronico))
             errores.Add("CorreoElectronico", "Coloque el correo electrónico.");
@@ -144,7 +144,7 @@ public static class Validador
             errores.Add("Nombre", "Nombre muy largo.");
 
         if (!ValidarPrecio(p.PrecioUnitario))
-            errores.Add("PrecioUnitario", "El precio debe ser mayor a 0 y tener máximo 2 decimales.");
+            errores.Add("PrecioUnitario", "El precio debe ser válido.");
 
         if (p.IdCategoria <= 0)
             errores.Add("IdCategoria", "Seleccione una categoría.");
