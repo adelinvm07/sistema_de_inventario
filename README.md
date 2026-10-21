@@ -1,4 +1,4 @@
-# Sistema de Inventario 
+# Sistema de Inventario
 Proyecto desarrollado en C# con Windows Forms, Guna.UI2, .NET 10 y SQL Server. Este permite administrar categorías, suplidores y productos, manejar fotografías de categorías y recuperar registros eliminados mediante una papelera.
 
 ## Funcionalidades
@@ -120,3 +120,91 @@ Presentación utiliza Entidades y Lógica de Negocio. No accede directamente a l
 `FabricaServicios` crea los servicios que utilizan las pantallas.
 
 Comprueba que estés ejecutando la versión correcta. Compilar desde Visual Studio normalmente actualiza la salida de `bin`, mientras que el ejecutable de `build` debe actualizarse mediante una nueva publicación.
+
+## Pruebas de funcionamiento
+
+Se realizaron pruebas manuales de los formularios, las validaciones y las reglas del inventario. A continuación se presentan las capturas de los casos probados.
+
+### 1. Pantalla principal
+
+La pantalla principal muestra el menú de navegación y los totales de categorías, suplidores y productos registrados.
+
+![pantalla principal](docs/pruebas/pantalla-principal.png)
+
+### 2. Categorías
+
+El listado muestra el nombre y la descripción de las categorías, junto con las opciones para crear, editar y eliminar.
+
+![listado categorias](docs/pruebas/listado-categorias.png)
+
+Se completó una categoría de prueba con nombre, descripción y una fotografía.
+
+![formulario categoria](docs/pruebas/formulario-categoria.png)
+
+La categoría guardada aparece en el listado.
+
+![categoria registrada](docs/pruebas/categoria-registrada.png)
+
+**Validación del nombre obligatorio:** al dejar el nombre vacío o con espacios, se muestra un aviso junto al campo.
+
+![nombre obligatorio](docs/pruebas/nombre-obligatorio.png)
+
+**Validación de longitud:** se rechazan los nombres demasiado cortos.
+
+![nombre corto](docs/pruebas/nombre-corto.png)
+
+**Validación de duplicados:** no se permite registrar otra categoría con un nombre existente.
+
+![categoria duplicada](docs/pruebas/categoria-duplicada.png)
+
+**Descripción obligatoria:** se muestra un error cuando el campo está vacío.
+
+![descripcion obligatoria](docs/pruebas/descripcion-obligatoria.png)
+
+**Límite de fotografías:** al alcanzar cinco fotos, el sistema rechaza una adicional y muestra un mensaje explicando el límite.
+
+![limite fotografias](docs/pruebas/limite-fotografias.png)
+
+### 3. Suplidores
+
+El listado presenta los datos de empresa, contacto, teléfono, correo electrónico y sitio web.
+
+![listado suplidores](docs/pruebas/listado-suplidores.png)
+
+**Validación de duplicados:** al intentar guardar una empresa que ya existe, se muestra un error junto al nombre.
+
+![empresa duplicada](docs/pruebas/empresa-duplicada.png)
+
+### 4. Productos
+
+El listado muestra el producto, los nombres de su categoría y suplidor, y el precio unitario.
+
+![listado productos](docs/pruebas/listado-productos.png)
+
+**Validación del precio:** al intentar guardar un producto con precio cero, aparece un error junto al campo.
+
+![validacion precio](docs/pruebas/validacion-precio.png)
+
+**Filtros combinados:** al seleccionar la categoría Electrónica y el suplidor TechDominicana, la tabla muestra los productos correspondientes a ambas selecciones.
+
+![filtros productos](docs/pruebas/filtros-productos.png)
+
+### 5. Eliminación y reglas de negocio
+
+Antes de eliminar un producto, el sistema solicita confirmación e indica que podrá recuperarse desde la Papelera.
+
+![confirmacion eliminacion](docs/pruebas/confirmacion-eliminacion.png)
+
+**Categorías con productos activos:** el sistema impide eliminarlas y explica el motivo.
+
+![restriccion categoria](docs/pruebas/restriccion-categoria.png)
+
+**Suplidores con productos activos:** también se bloquea su eliminación para conservar las relaciones del inventario.
+
+![restriccion suplidor](docs/pruebas/restriccion-suplidor.png)
+
+### 6. Papelera
+
+El producto eliminado aparece en la pestaña Productos de la Papelera. Desde esta pantalla se encuentra disponible el botón **Restaurar seleccionado**.
+
+![papelera productos](docs/pruebas/papelera-productos.png)
