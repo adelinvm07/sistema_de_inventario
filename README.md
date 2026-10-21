@@ -10,7 +10,7 @@ Proyecto desarrollado en C# con Windows Forms, Guna.UI2, .NET 10 y SQL Server. E
 - Validar campos obligatorios y formatos de datos.
 - Evitar nombres duplicados.
 - Realizar eliminaciones lógicas y restaurar registros.
-- Registrar errores técnicos en un archivo de log.
+- Registrar errores en un archivo de log.
 
 ## Requisitos
 
@@ -35,11 +35,9 @@ El ejecutable publicado incluye .NET y las bibliotecas de la aplicación. La bas
 
 ### 1. Extraer el proyecto
 
-Descomprime el archivo de entrega en una carpeta de tu equipo.
+Descomprime el archivo en una carpeta de tu computador.
 
 ### 2. Instalar SQL Server LocalDB
-
-Instala SQL Server Express LocalDB si todavía no está disponible en el equipo.
 
 La aplicación utiliza esta instancia:
 
@@ -47,33 +45,14 @@ La aplicación utiliza esta instancia:
 (localdb)\MSSQLLocalDB
 ```
 
-Puedes comprobar las instancias instaladas desde una terminal:
-
-```powershell
-SqlLocalDB info
-```
-
-Para iniciar la instancia:
-
-```powershell
-SqlLocalDB start MSSQLLocalDB
-```
-
-Si no existe, puedes crearla e iniciarla:
-
-```powershell
-SqlLocalDB create MSSQLLocalDB
-SqlLocalDB start MSSQLLocalDB
-```
-
 ### 3. Crear la base de datos
 
-Conéctate a `(localdb)\MSSQLLocalDB` desde tu herramienta de SQL.
+Conéctate a `(localdb)\MSSQLLocalDB` desde SQL.
 
 Ejecuta los scripts de la carpeta `database` en este orden:
 
-1. `schema.sql`: crea la base de datos y sus tablas.
-2. `datos.sql`: agrega los registros iniciales.
+1. `schema.sql`: que crea la base de datos y sus tablas.
+2. `datos.sql`: que agrega los registros iniciales.
 
 ### 4. Ejecutar la aplicación
 
@@ -91,7 +70,7 @@ La aplicación utiliza autenticación integrada de Windows para conectarse a SQL
 4. Comprueba que la base de datos esté configurada.
 5. Compila y ejecuta la solución.
 
-También puedes compilar desde una terminal ubicada en la carpeta principal:
+También se puede compilar desde una terminal ubicada en la carpeta principal con:
 
 ```powershell
 dotnet restore src/SistemaInventario.slnx
@@ -108,18 +87,6 @@ La solución está organizada en cuatro proyectos:
 | AccesoDatos | Contiene la conexión y los repositorios de SQL Server. |
 | LogicaNegocio | Contiene servicios, validaciones y reglas de negocio. |
 | Presentacion | Contiene los formularios y la interacción con el usuario. |
-
-El recorrido general de una operación es:
-
-```text
-Formulario → Servicio → Repositorio → SQL Server
-```
-
-Presentación utiliza Entidades y Lógica de Negocio. No accede directamente a los repositorios.
-
-`FabricaServicios` crea los servicios que utilizan las pantallas.
-
-Comprueba que estés ejecutando la versión correcta. Compilar desde Visual Studio normalmente actualiza la salida de `bin`, mientras que el ejecutable de `build` debe actualizarse mediante una nueva publicación.
 
 ## Pruebas de funcionamiento
 
